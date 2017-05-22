@@ -1,13 +1,25 @@
 var express = require('express');
 var exphbs  = require('express-handlebars');
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
 var app = express();
+
+
+app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(express.static('public'));
+
+app.use(bodyParser.json());
 
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
-app.get('/', function (req, res) {
-    res.render('home');
+app.get('/greetings', function (req, res) {
+    res.render('index');
+});
+
+app.post('/greetings', function (req, res) {
+  res.render('index', {greet: 'Hello, '+ req.body.inputName});
+
 });
 
 app.listen(3000);
