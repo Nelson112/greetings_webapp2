@@ -3,6 +3,8 @@ var exphbs = require('express-handlebars');
 var bodyParser = require('body-parser');
 var app = express();
 
+var counter = 0;
+
 
 app.use(bodyParser.urlencoded({
   extended: false
@@ -23,20 +25,25 @@ app.get('/greetings', function(req, res) {
 
 app.post('/greetings', function(req, res) {
 
-var language = req.body.language;
+  var language = req.body.language;
 
-var myString = "";
+  var myTextMsg = "";
 
-if (language === 'English') {
-  myString = "Hello, " + req.body.inputName;
-} else if (language === 'isiXhosa') {
-  myString = "Molo, " + req.body.inputName;
-} else if (language === 'Swahili') {
-  myString = "Hodi, " + req.body.inputName;
-}
-res.render("index", {
-  greet: myString
-});
+  if (language === 'English') {
+    myTextMsg = "Hello, " + req.body.inputName;
+    counter++;
+  } else if (language === 'isiXhosa') {
+    myTextMsg = "Molo, " + req.body.inputName;
+    counter++;
+  } else if (language === 'Swahili') {
+    myTextMsg = "Hodi, " + req.body.inputName;
+    counter++;
+  }
+  console.log(counter);
+  res.render("index", {
+    counter: counter,
+    greet: myTextMsg
+  });
 });
 
 
