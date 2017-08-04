@@ -12,6 +12,7 @@
   "dependencies": {
     "body-parser": "*",
     "express": "*",
-    "express-handlebars": "*"
+    "express-handlebars": "*",
+    "mongoose": "^4.11.5"
   }
 }

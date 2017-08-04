@@ -1,10 +1,14 @@
-var MongoClient = require('mongodb').MongoClient
-    , format = require('util').format;
-MongoClient.connect('mongodb://127.0.0.1:27017/test', function (err, db) {
-    if (err) {
-        throw err;
-    } else {
-        console.log("successfully connected to the database");
-    }
-    db.close();
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/test');
+
+var storedName = mongoose.model('storedName', { name: String });
+
+
+var names = new storedName({ name: 'Zildjian' });
+names.save(function (err) {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log('db is created');
+  }
 });
