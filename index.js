@@ -1,10 +1,10 @@
 var express = require('express');
 var exphbs = require('express-handlebars');
 var bodyParser = require('body-parser');
+var models = require('./models')
+
 
 var app = express();
-
-var counter = 0;
 
 
 app.use(bodyParser.urlencoded({
@@ -24,68 +24,44 @@ app.get('/', function(req, res) {
   res.render('index');
 });
 
+function storeName(myName, cb) {
+  var names = new models.StoredName({
+    name: myName,
+    count: 1
+  });
+  var saveName = names.save(cb);
+};
+
+
 app.post('/greetings', function(req, res) {
 
   var language = req.body.language;
 
   var myTextMsg = "";
 
+  var myName = req.body.inputName;
+
   if (language === 'English') {
-    myTextMsg = "Hello, " + req.body.inputName;
-    counter++;
+    myTextMsg = "Hello, " + myName;
   } else if (language === 'isiXhosa') {
-    myTextMsg = "Molo, " + req.body.inputName;
-    counter++;
+    myTextMsg = "Molo, " + myName;
   } else if (language === 'Swahili') {
-    myTextMsg = "Hodi, " + req.body.inputName;
-    counter++;
+    myTextMsg = "Hodi, " + myName;
   }
-  console.log(counter);
-  res.render("index", {
-    counter: counter,
-    greet: myTextMsg
-  });
+  storeName(myName, function(err) {
+    models.StoredName.count({}, function(err, count) {
+      if (err) {
+        console.log(err);
+      } else {
+        res.render("index", {
+          greet: myTextMsg,
+          counter: count
+        });
+      }
+    })
+  })
 });
 
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 3000
 
 app.listen(port);
-
-
-
-
-
-
-
-
-
-// var express = require('express');
-// var app = express();
-// var greetedNames = [];
-// var server = app.listen(3001);
-//
-// app.get('/greetings/:name', function(req, res) {
-//   res.send("Hello, " + req.params.name);
-//   greetedNames.push(req.params.name);
-//   console.log(req.params.name);
-// });
-// app.get('/greeted', function(req, res) {
-//   res.send(greetedNames);
-//   console.log(greetedNames);
-//  });
-// app.get('/counter/:user_name', function(req, res) {
-//   var user = req.params.user_name;
-//   var greetCounter = {};
-//
-//   for (var i = 0; i < greetedNames.length; i++) {
-//     var userName = greetedNames[i]
-//     if(user===userName)
-//     {
-//       greetCounter[userName] = greetCounter[userName] ? greetCounter[userName] + 1 : 1;
-//     }
-//   }
-//   //res.send(greetCounter[user]);
-//   res.send('Hello, ' + user + " has been greeted " + greetCounter[user] + " time(s)");
-//   console.log(greetCounter[userName]);
-//   console.log(greetCounter);
-// });
