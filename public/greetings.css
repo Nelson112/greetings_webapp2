@@ -1,11 +1,11 @@
 body {
-  color: white;
-  background-color: black;
+  color: #123353;
+  background-color: #EBA7A7;
   text-align: center;
 }
 h1 {
-  background-color: white;
-  color: black;
+  background-color: #123353;
+  color: #FCF4F2;
 }
 input {
   font-family: sans-serif;
@@ -21,3 +21,6 @@ input:focus {
 form {
   text-align: center;
 };
+li {
+  list-style-type: none;
+}

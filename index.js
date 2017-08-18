@@ -24,12 +24,44 @@ app.get('/', function(req, res) {
   res.render('index');
 });
 
+app.get('/greeted', function(req, res) {
+  models.StoredName.find({}, function(err, person) {
+    if (err) {
+      return cb(err);
+    }
+    // console.log(person);
+    res.render('greetedindex',{greeted: person});
+});
+});
+app.get('/counter/:name', function(req, res) {
+  models.StoredName.findOne({
+  }, function(err, count) {
+    if (err) {
+      return cb(err);
+    }
+    console.log(count);
+    res.render('counterindex',{counter: count});
+});
+});
+
+
 function storeName(myName, cb) {
-  var names = new models.StoredName({
-    name: myName,
-    count: 1
-  });
-  var saveName = names.save(cb);
+  models.StoredName.findOne({
+    name: myName
+  }, function(err, person) {
+    if (err) {
+      return cb(err);
+    } else if (person === null) {
+      var names = new models.StoredName({
+        name: myName,
+        count: 1
+      });
+      names.save(cb);
+    } else if (person) {
+      person.count++;
+      person.save(cb);
+    }
+  })
 };
 
 
@@ -62,6 +94,6 @@ app.post('/greetings', function(req, res) {
   })
 });
 
-var port = process.env.PORT || 3000
+            var port = process.env.PORT || 3000
 
-app.listen(port);
+            app.listen(port);

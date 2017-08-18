@@ -1,0 +1,7 @@
+<h1>The Names Greeted Are:</h1>
+<form action="/greeted" method="post">
+  {{#each greeted}}
+
+<br><a href="/counter/{{this.name}}">{{this.name}}</a></br>
+{{/each}}
+</form>
