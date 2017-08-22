@@ -1,8 +1,9 @@
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/users',{
-   useMongoClient: true,
-});
+var mongoURL = process.env.MONGO_DB_URL || "mongodb://localhost/users";
 
+mongoose.connect(mongoURL, {
+  useMongoClient: true,
+});
 exports.StoredName = mongoose.model('storedName', {
   name: String,
   count: Number

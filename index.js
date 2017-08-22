@@ -33,14 +33,23 @@ app.get('/greeted', function(req, res) {
     res.render('greetedindex',{greeted: person});
 });
 });
-app.get('/counter/:name', function(req, res) {
+app.get('/counter/:name', function(req, res, done) {
+  var name = req.params.name;
   models.StoredName.findOne({
-  }, function(err, count) {
+    name: req.params.name
+  }, function(err, counter) {
     if (err) {
-      return cb(err);
+      return done(err);
     }
-    console.log(count);
-    res.render('counterindex',{counter: count});
+    if (counter !== null) {
+      var msg = counter.name + ' has been greeted '+ counter.count + ' times.'
+      res.render('counterindex',{counter: msg});
+
+    }
+    else{
+      res.render('counterindex')
+    }
+    // console.log(counter);
 });
 });
 
